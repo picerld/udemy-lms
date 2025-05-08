@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\RedirectIfAuthenticatedGuards;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,7 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'auth' => Authenticate::class,
-            'guest' => RedirectIfAuthenticated::class
+            'guest' => RedirectIfAuthenticated::class,
+            'redirect.auth.guards' => RedirectIfAuthenticatedGuards::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
