@@ -28,8 +28,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if (Auth::user()->hasRole('Instructure')) {
-            return redirect()->intended(route('Instructure.dashboard', absolute: false));
+        if (Auth::user()->hasRole('Instructor')) {
+            return redirect()->intended(route('instructor.dashboard', absolute: false));
         }
 
         return redirect()->intended(route('dashboard', absolute: false));

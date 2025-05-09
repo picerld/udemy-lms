@@ -17,6 +17,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('photo_profile')->nullable();
+            $table->string('headline')->nullable();
+            $table->string('bio')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('linkedin')->nullable();
+            $table->string('website')->nullable();
+            $table->string('github')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
