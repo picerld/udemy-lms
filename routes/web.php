@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\AdminController;
+use App\Http\Controllers\Frontend\InstructorController;
 use App\Http\Controllers\Frontend\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -9,12 +10,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => ['auth', 'role:Student']], function () {
-    Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+Route::middleware('auth')->group(function () {
+    Route::group(['middleware' => ['role:Student']], function () {
+        Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+    });
+
+    Route::group(['middleware' => ['role:Instructor'], 'prefix' => 'instructor', 'as' => 'instructor.'], function () {
+        Route::get('/dashboard', [InstructorController::class, 'index'])->name('dashboard');
+    });
 });
 
-Route::group(['middleware' => ['auth:admin', 'role:Admin'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+Route::middleware('auth:admin')->group(function () {
+    Route::group(['middleware' => ['role:Admin'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    });
 });
 
 Route::middleware('auth.web_or_admin')->group(function () {
@@ -23,5 +32,5 @@ Route::middleware('auth.web_or_admin')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
-require __DIR__.'/admin.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';

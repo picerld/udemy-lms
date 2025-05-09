@@ -25,8 +25,8 @@ class DatabaseSeeder extends Seeder
             'view_dashboard_user',
         ];
 
-        $instructureRolePermissions = [
-            'view_dashboard_instructure',
+        $instructoreRolePermissions = [
+            'view_dashboard_instructor',
         ];
 
         foreach ($adminRolePermissions as $permission) {
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        foreach ($instructureRolePermissions as $permission) {
+        foreach ($instructoreRolePermissions as $permission) {
             Permission::firstOrCreate(
                 ['name' => $permission, 'guard_name' => 'web']
             );
@@ -49,11 +49,11 @@ class DatabaseSeeder extends Seeder
 
         $adminRoleWeb = Role::firstOrCreate(['name' => 'Admin', 'guard_name' => 'admin']);
         $userRoleWeb = Role::firstOrCreate(['name' => 'Student', 'guard_name' => 'web']);
-        $instructureRoleWeb = Role::firstOrCreate(['name' => 'Instructure', 'guard_name' => 'web']);
+        $instructorRoleWeb = Role::firstOrCreate(['name' => 'Instructor', 'guard_name' => 'web']);
 
         $adminRoleWeb->givePermissionTo($adminRolePermissions);
         $userRoleWeb->givePermissionTo($studentRolePermissions);
-        $instructureRoleWeb->givePermissionTo($instructureRolePermissions);
+        $instructorRoleWeb->givePermissionTo($instructoreRolePermissions);
 
         $admin = Admin::create([
             'name' => 'Pice',
@@ -69,15 +69,15 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        $instructure = User::create([
-            'name' => 'Instructure',
-            'email' => 'instructure@local.gg',
+        $instructor = User::create([
+            'name' => 'Instructor',
+            'email' => 'instructor@local.gg',
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);
 
         $admin->assignRole($adminRoleWeb);
         $user->assignRole($userRoleWeb);
-        $instructure->assignRole($instructureRoleWeb);
+        $instructor->assignRole($instructorRoleWeb);
     }
 }
